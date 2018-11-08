@@ -30,7 +30,6 @@ class Mechanic(Personal):
         print(driver1, """called for a Mechanic!""""\n")
         Buss().Traffic_addstuff(driver1, report, status)
 
-
 class Cleaner(Personal):
     def __init__(self, first, last):
         super().__init__(first, last)
