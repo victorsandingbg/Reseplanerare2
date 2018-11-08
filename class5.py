@@ -22,40 +22,42 @@ class Report:
         pass
 
     def report_on_site(self, driver1):
-        report = input("Confirm on time""\n""Not on time: hit any key:")
+        report = input("Bekräfta om förare är på plats.""\n""Inte i tid: tryck någon tangent: ")
         if report == "1":
-            report = "on site"
-            print(driver1, "is on site.""\n")
+            report = "på plats"
+            print(driver1, "är på plats.""\n")
             Report.report_buss_condition(self, driver1, report)
         else:
-            report = "not on site"
-            print(driver1, ": Driver is not on site""\n")
+            report = "inte på plats"
+            print(driver1, ": Föraren är inte på plats""\n")
             Report.report_buss_condition(self, driver1, report)
         # Rapporterar vilket skick bussen är i.
 
     def report_buss_condition(self, driver1, report):
-        status = input("Confirm if buss needs any shit done?""\n"
-                       "1. Buss in mintcondition""\n"
-                       "2. Need a Mechanic?""\n"
-                       "3. Need a Cleaner?")
+        status = input("Bekräfta om bussen behöver något fixat?""\n"
+                       "1. Bussen är i perfekt skick.""\n"
+                       "2. Behöver en mekaniker.""\n"
+                       "3. Behöver en städare.""\n"
+                       "Ange ett alternativ [1-3]: ")
+
         if status == "1":
-            status = "mint condition"
-            print("Buss in mintcondition")
+            status = "Perfekt skick."
+            print("Bussen är i perfekt skick.")
             Buss().Traffic_addstuff(driver1, report, status)
         elif status == "2":
-            status = "Need a mechanic"
+            status = "Behöver en mekaniker."
             Mechanic("Ringaren","iNottredam").call_mechanic(driver1, report, status)
         elif status == "3":
-            status = "Need a cleaner"
+            status = "Behöver en städare."
             Cleaner().call_cleaner(driver1, report, status)
         else:
-            print("wrong values")
+            print("fel värden")
 
         # Rapporterar tidspåslag
     def report_accident(self, valdavg):
         print(valdavg)
         rtype = input("Ange varför det är försenat: ")
-        time = input("Ange hur länge förseningen är:")
+        time = input("Ange hur länge förseningen är i minuter: ")
         newtime = valdavg.avg +" - " + valdavg.ank +" + " + time
         print(f"""Försenat pga {rtype}: Avångstid {newtime} min""")
 
@@ -91,12 +93,11 @@ class Buss:
         TrafficMenu().run()
 
     def Traffic_addstuff(self, driver1, report, status):
-        print("Välj vilken linje du sitter på?")
         print("****************************************************")
         print(f"""1.{BussLinesCollection().get_bussline_by_id(0)}""")
         print(f"""2.{BussLinesCollection().get_bussline_by_id(1)}""")
         print(f"""3.{BussLinesCollection().get_bussline_by_id(2)}""")
-        linje = input("Choose one making you better feeling")
+        linje = input("Välj en linje du vill åka.")
 
         if linje == "1":
             valdlinje = BussLinesCollection().get_bussline_by_id(0)
@@ -108,7 +109,7 @@ class Buss:
             print(f"""4.{Timetable().get_timetable1_spec(3)}""")
             print(f"""5.{Timetable().get_timetable1_spec(4)}""")
             print(f"""6.{Timetable().get_timetable1_spec(5)}""")
-            timetable1 = input("Choose specific departure:")
+            timetable1 = input("Välj specifik avgång:")
             if timetable1 == "1":
                 valdavg = Timetable().get_timetable1_spec(0)
                 print(f"""{Timetable().get_timetable1_spec(0)}""")
@@ -134,7 +135,7 @@ class Buss:
                 print(f"""{Timetable().get_timetable1_spec(5)}""")
                 Buss().samla_info(driver1, report, status, valdlinje, valdavg)
             else:
-                print("fuck u")
+                print("Tyvärr, vänligen försök igen.")
 
         elif linje == "2":
             valdlinje = BussLinesCollection().get_bussline_by_id(1)
@@ -146,7 +147,7 @@ class Buss:
             print(f"""4.{Timetable().get_timetable2_spec(3)}""")
             print(f"""5.{Timetable().get_timetable2_spec(4)}""")
             print(f"""6.{Timetable().get_timetable2_spec(5)}""")
-            timetable2 = input("Choose specific departure:")
+            timetable2 = input("Välj specifik avgång:")
             if timetable2 == "1":
                 valdavg = Timetable().get_timetable2_spec(0)
                 print(f"""{Timetable().get_timetable2_spec(0)}""")
@@ -172,7 +173,7 @@ class Buss:
                 print(f"""{Timetable().get_timetable2_spec(5)}""")
                 Buss().samla_info(driver1, report, status, valdlinje, valdavg)
             else:
-                print("fuck u")
+                print("Tyvärr, vänligen försök igen.")
 
         elif linje == "3":
             valdlinje = BussLinesCollection().get_bussline_by_id(2)
@@ -184,7 +185,7 @@ class Buss:
             print(f"""4.{Timetable().get_timetable3_spec(3)}""")
             print(f"""5.{Timetable().get_timetable3_spec(4)}""")
             print(f"""6.{Timetable().get_timetable3_spec(5)}""")
-            timetable3 = input("Choose specific departure:")
+            timetable3 = input("Välj specifik avgång:")
             if timetable3 == "1":
                 valdavg = Timetable().get_timetable3_spec(0)
                 print(f"""{Timetable().get_timetable3_spec(0)}""")
@@ -210,9 +211,9 @@ class Buss:
                 print(f"""{Timetable().get_timetable3_spec(5)}""")
                 Buss().samla_info(driver1, report, status, valdlinje, valdavg)
             else:
-                print("fuck u")
+                print("Tyvärr, vänligen försök igen.")
         else:
-            print("Choose another option:")
+            print("Välj ett annat alternativ:")
         # Meny för själva linjerna till bussarna
 
 
@@ -226,17 +227,18 @@ class Linjemenu:
 
     def display_linjemenu(self):
         print(f"""
-Busslinjer
-** ** ** ** ** ** ** ** ** ** ** **
+--------------Busslinjer--------------
+
 1.{BussLinesCollection().get_bussline_by_id(0)}
 2.{BussLinesCollection().get_bussline_by_id(1)}
 3.{BussLinesCollection().get_bussline_by_id(2)}
+--------------------------------------
         """)
 
     def run(self):
         while True:
             self.display_linjemenu()
-            choice = input("Välj linje för se tidtabell: ")
+            choice = input("Välj linje för att se tidtabell: ")
             action = choice
             if action == "1":
                 print("""\nGöteborg Centralstationen - Uddevalla Kampenhof\n** ** ** ** ** ** ** ** ** ** ** **""")
@@ -250,7 +252,7 @@ Busslinjer
                 Timetable().get_timetable3()
 
             else:
-                print("is not an option".format(choice))
+                print("är inte ett alternativ".format(choice))
 
 
 class TrafficMenu:
@@ -276,23 +278,23 @@ class TrafficMenu:
 
     def display_traffic(self):
         print(f"""
-Trafikcentral menyn
+Meny Trafikcentral
 ************************
-1. Rapportera försening
+1. Rapportera försening.
 2. Se pågående förseningar.
-3. Bussåtgärder/Bussar som behöver cleaning
+3. Bussåtgärder.
  
         """)
 
     def run(self):
         while True:
             self.display_traffic()
-            choice = input("Enter an option: ")
+            choice = input("Ange ett alternativ: ")
             action = self.choices.get(choice)
             if action:
                 action()
             else:
-                print("is not an option".format(choice))
+                print("är inte ett alternativ".format(choice))
 
 
 class Drivermenu:
@@ -306,27 +308,27 @@ class Drivermenu:
         }
     def display_driver(self):
         print(f"""
-BussChaffisar
-************************
+--------------Busschaffisar--------------
 1.{BussDriverCollection().get_driver_by_id(0)}
 2.{BussDriverCollection().get_driver_by_id(1)}
 3.{BussDriverCollection().get_driver_by_id(2)}
 4.{BussDriverCollection().get_driver_by_id(3)}
 5.{BussDriverCollection().get_driver_by_id(4)}
+------------------------------------------
 """)
 
     def run(self):
         while True:
             self.display_driver()
-            choice = input("Enter an option: ")
+            choice = input("Ange ett alternativ: ")
             action = self.choices.get(choice)
             if action:
-                print(f"""Choice of driver: {Bussdriver.printname(action)}""")
+                print(f"""Val av förare: {Bussdriver.printname(action)}""")
                 driver1 = Bussdriver.printname(action)
                 print(driver1)
                 Report().report_on_site(driver1)
             else:
-                print("is not an option".format(choice))
+                print("är inte ett alternativ".format(choice))
 
 
 class Menu:
@@ -338,27 +340,28 @@ class Menu:
 
     def display_menu(self):
         print("""
-        Main Menu
-        1. Are you Company?
-        2. Or are you a Consumer?
+        --------------Huvudmeny--------------
+        1.Företag
+        2.Konsument
+        -------------------------------------
         """)
 
     def run(self):
         while True:
             self.display_menu()
-            choice = input("Enter an option: ")
+            choice = input("Ange ett alternativ [1-2]: ")
             action = self.choices.get(choice)
             if action:
                 action()
             else:
-                print("{0} is not a valid choice".format(choice))
+                print("{0} är inte ett giltigt val".format(choice))
 
     def company(self):
-        password = input("Please insert password")
+        password = input("Vänligen skriv in lösenordet: ")
         if password == "dog":
             Drivermenu().run()
         else:
-            print("Wrong password")
+            print("Fel lösenord")
 
     def consumer(self):
         Linjemenu().run()

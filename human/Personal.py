@@ -26,7 +26,7 @@ class Mechanic(Personal):
 
     def call_mechanic(self, driver1, report, status):
         print(driver1, report, status)
-        print(driver1, """called for a Mechanic!""""\n")
+        print(driver1, """Krävde en mekaniker!!""""\n")
         mechanic1 = Mechanic(self)
         Buss().Traffic_addstuff(driver1, report, status, mechanic1)
 
@@ -37,7 +37,7 @@ class Cleaner(Personal):
 
     def call_cleaner(self, driver1, report, status):
         print(driver1, report, status)
-        print(driver1, """called for a Cleaner!""""\n")
+        print(driver1, """Krävde en städare!""""\n")
         cleaner1 = Cleaner(self)
         Buss().Traffic_addstuff(driver1, report, status, cleaner1)
 
