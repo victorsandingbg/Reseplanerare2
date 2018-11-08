@@ -22,19 +22,21 @@ class Report:
         pass
 
     def report_on_site(self, driver1):
-        report = input("Bekräfta om förare är på plats.""\n""Inte i tid: tryck någon tangent: ")
-        if report == "1":
+        report = input("-----Förare på plats-----\nVänligen ange [j/n]: ")
+        if report == "ja" or report == "j":
             report = "på plats"
             print(driver1, "är på plats.""\n")
             Report.report_buss_condition(self, driver1, report)
-        else:
+        elif report == "n" or report == "nej":
             report = "inte på plats"
-            print(driver1, ": Föraren är inte på plats""\n")
+            print(driver1, "är inte på plats.""\n")
             Report.report_buss_condition(self, driver1, report)
-        # Rapporterar vilket skick bussen är i.
+        else:
+            print("Fel värde")
 
+    # Rapporterar vilket skick bussen är i.
     def report_buss_condition(self, driver1, report):
-        status = input("Bekräfta om bussen behöver något fixat?""\n"
+        status = input("-----Bekräfta om bussen behöver något fixat-----""\n"
                        "1. Bussen är i perfekt skick.""\n"
                        "2. Behöver en mekaniker.""\n"
                        "3. Behöver en städare.""\n"
@@ -51,7 +53,7 @@ class Report:
             status = "Need a cleaner"
             Cleaner("Shitface", "Mctrotter").call_cleaner(driver1, report, status)
         else:
-            print("fel värden")
+            print("Fel värde")
 
         # Rapporterar tidspåslag
     def report_accident(self, valdavg, allinfo):
@@ -282,11 +284,11 @@ class TrafficMenu:
 
     def display_traffic(self):
         print(f"""
-Meny Trafikcentral
-************************
+--------------Trafikcentral--------------
 1. Rapportera försening.
 2. Se pågående förseningar.
 3. Bussåtgärder.
+-----------------------------------------
 """)
 
     def run(self, valdavg, allinfo):
@@ -329,9 +331,9 @@ class Drivermenu:
             choice = input("Ange ett alternativ: ")
             action = self.choices.get(choice)
             if action:
-                print(f"""Val av förare: {Bussdriver.printname(action)}""")
+                print(f"""Förare: {Bussdriver.printname(action)}\n""")
+
                 driver1 = Bussdriver.printname(action)
-                print(driver1)
                 Report().report_on_site(driver1)
             else:
                 print("är inte ett alternativ".format(choice))
