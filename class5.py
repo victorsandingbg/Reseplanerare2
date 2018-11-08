@@ -54,12 +54,15 @@ class Report:
             print("fel värden")
 
         # Rapporterar tidspåslag
-    def report_accident(self, valdavg):
+    def report_accident(self, valdavg, allinfo):
         print(valdavg)
         rtype = input("Ange varför det är försenat: ")
         time = input("Ange hur länge förseningen är i minuter: ")
         newtime = valdavg.avg +" - " + valdavg.ank +" + " + time
         print(f"""Försenat pga {rtype}: Avångstid {newtime} min""")
+        allinfo.append(newtime)
+        Drivermenu().run()
+
 
 class BussLinesCollection:
     def __init__(self):
@@ -89,7 +92,12 @@ class Buss:
        # allt_list.append(valdavg.avg + valdavg.ank + driver1 + report + status + valdlinje)
         #print(alltlist)
         print(driver1, report, status, valdlinje, valdavg)
-        TrafficMenu().run(valdavg)
+        allinfo = [driver1, report, status, valdlinje, valdavg]
+
+
+        TrafficMenu().run(valdavg, allinfo)
+
+
 
     def Traffic_addstuff(self, driver1, report, status):
         print("****************************************************")
@@ -256,19 +264,17 @@ class Linjemenu:
 
 class TrafficMenu:
     def __init__(self):
-        self.choices = {
-            "1": self.send_accident,
-            "2": self.send_idontknow,
-            "3": self.send_cleaner,
-                }
+        pass
 
     def send_accident(self, valdavg):
         Report().report_accident(valdavg)
 
 
-    def send_idontknow(self):
-        # Report().show_late_arrivals()
-        pass
+    def send_idontknow(self, allinfo):
+        print(allinfo)
+        #for i in allinfo:
+         #   print(i, end="")
+
 
     def send_cleaner(self):
         # Report().show_damage_buss()
@@ -283,13 +289,16 @@ Meny Trafikcentral
 3. Bussåtgärder.
 """)
 
-    def run(self, valdavg):
+    def run(self, valdavg, allinfo):
         while True:
             self.display_traffic()
             choice = input("Ange ett alternativ: ")
-            action = self.choices.get(choice)
-            if action:
-                action(valdavg)
+            if choice == "1":
+                Report().report_accident(valdavg, allinfo)
+
+            elif choice == "2":
+                TrafficMenu().send_idontknow(allinfo)
+
             else:
                 print("är inte ett alternativ".format(choice))
 
