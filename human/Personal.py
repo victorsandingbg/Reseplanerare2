@@ -1,5 +1,6 @@
 from class5 import *
         # Skapar Individen
+
 class Personal:
     def __init__(self, first, last):
         self.first = first
@@ -26,10 +27,8 @@ class Mechanic(Personal):
 
     def call_mechanic(self, driver1, report, status):
         print(driver1, report, status)
-        print(driver1, """Krävde en mekaniker!!""""\n")
-        mechanic1 = Mechanic(self)
-        Buss().Traffic_addstuff(driver1, report, status, mechanic1)
-
+        print(driver1, """called for a Mechanic!""""\n")
+        Buss().Traffic_addstuff(driver1, report, status)
 
 class Cleaner(Personal):
     def __init__(self, first, last):
@@ -37,9 +36,8 @@ class Cleaner(Personal):
 
     def call_cleaner(self, driver1, report, status):
         print(driver1, report, status)
-        print(driver1, """Krävde en städare!""""\n")
-        cleaner1 = Cleaner(self)
-        Buss().Traffic_addstuff(driver1, report, status, cleaner1)
+        print(driver1, """called for a Cleaner!""""\n")
+        Buss().Traffic_addstuff(driver1, report, status)
 
   #  def add_cleaner(self):
    #     cleanerlist = []

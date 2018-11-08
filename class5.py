@@ -45,11 +45,11 @@ class Report:
             print("Bussen är i perfekt skick.")
             Buss().Traffic_addstuff(driver1, report, status)
         elif status == "2":
-            status = "Behöver en mekaniker."
-            Mechanic("Ringaren","iNottredam").call_mechanic(driver1, report, status)
+            status = "Need a mechanic"
+            Mechanic("Ringaren", "iNottredam").call_mechanic(driver1, report, status)
         elif status == "3":
-            status = "Behöver en städare."
-            Cleaner().call_cleaner(driver1, report, status)
+            status = "Need a cleaner"
+            Cleaner("Shitface", "Mctrotter").call_cleaner(driver1, report, status)
         else:
             print("fel värden")
 
@@ -60,7 +60,6 @@ class Report:
         time = input("Ange hur länge förseningen är i minuter: ")
         newtime = valdavg.avg +" - " + valdavg.ank +" + " + time
         print(f"""Försenat pga {rtype}: Avångstid {newtime} min""")
-
 
 class BussLinesCollection:
     def __init__(self):
@@ -90,7 +89,7 @@ class Buss:
        # allt_list.append(valdavg.avg + valdavg.ank + driver1 + report + status + valdlinje)
         #print(alltlist)
         print(driver1, report, status, valdlinje, valdavg)
-        TrafficMenu().run()
+        TrafficMenu().run(valdavg)
 
     def Traffic_addstuff(self, driver1, report, status):
         print("****************************************************")
@@ -258,15 +257,14 @@ class Linjemenu:
 class TrafficMenu:
     def __init__(self):
         self.choices = {
-            "1": self.send_accident(),
-            "2": self.send_idontknow(),
-            "3": self.send_cleaner(),
-
+            "1": self.send_accident,
+            "2": self.send_idontknow,
+            "3": self.send_cleaner,
                 }
 
-    def send_accident(self):
-        # Report().report_accident()
-        pass
+    def send_accident(self, valdavg):
+        Report().report_accident(valdavg)
+
 
     def send_idontknow(self):
         # Report().show_late_arrivals()
@@ -283,16 +281,15 @@ Meny Trafikcentral
 1. Rapportera försening.
 2. Se pågående förseningar.
 3. Bussåtgärder.
- 
-        """)
+""")
 
-    def run(self):
+    def run(self, valdavg):
         while True:
             self.display_traffic()
             choice = input("Ange ett alternativ: ")
             action = self.choices.get(choice)
             if action:
-                action()
+                action(valdavg)
             else:
                 print("är inte ett alternativ".format(choice))
 
