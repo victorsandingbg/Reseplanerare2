@@ -3,16 +3,15 @@ from human.Personal import *
 
 class BussDriverCollection:
     def __init__(self):
-        with open("busschaffis.txt", "r") as f:
-
+        with open("busschaffis.txt", "r", encoding="utf-8") as f:
             obs = f.readlines()
             self.drivers = []
 
             for d in obs:
-                first, last = d.split()
+                first, last = d.split(" ")
                 driver = Bussdriver(first, last)
                 self.drivers.append(driver)
-            f.close()
+        f.close()
 
     def get_driver_by_id(self, id):
             return self.drivers[id]
