@@ -63,7 +63,7 @@ class Report:
         newtime = valdavg.avg +" - " + valdavg.ank +" + " + time
         print(f"""Försenat pga {rtype}: Avångstid {newtime} min""")
         allinfo.append(newtime)
-        Drivermenu().run()
+        Menu().run()
 
 
 class BussLinesCollection:
@@ -268,8 +268,8 @@ class TrafficMenu:
     def __init__(self):
         pass
 
-    def send_accident(self, valdavg):
-        Report().report_accident(valdavg)
+    def send_accident(self, valdavg, allinfo):
+        Report().report_accident(valdavg, allinfo)
 
 
     def send_idontknow(self, allinfo):
