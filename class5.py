@@ -58,13 +58,23 @@ class Report:
 
         # Rapporterar tidspåslag
     def report_accident(self, valdavg, allinfo):
-        print(valdavg)
+        #print(valdavg)
         rtype = input("Ange varför det är försenat: ")
         time = input("Ange hur länge förseningen är i minuter: ")
         newtime = valdavg.avg +" - " + valdavg.ank +" + " + time
         print(f"""Försenat pga {rtype}: Avångstid {newtime} min""")
         allinfo.append(newtime)
-        Menu().run()
+        Report().create(allinfo)
+
+    def create(self, allinfo):
+        self.allinfo = allinfo
+
+        with open("ongoing_delays.txt", "w") as f:
+            for allinfo in f:
+                f.write(allinfo)
+
+
+    #Menu().run()
 
 
 class BussLinesCollection:
