@@ -1,0 +1,33 @@
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+
+Avgång: 12:00 - 13:30
++ 28 min
+Anledning till försening: Köer
+-----------------
+Busslinje 121 | Partille Centrum - Nordstan
+
+Avgång: 14:15 - 14:45
++ 15 min
+Anledning till försening: grus på vägen
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+
+Avgång: 10:00 - 11:00
++ 25 min
+Anledning till försening: kaos mannen
+-----------------
+Busslinje 121 | Partille Centrum - Nordstan
+
+Avgång: 07:15 - 07:45
++ 12 min
+Anledning till försening: stopp på E6:an
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+
+Avgång: 09:00 - 10:30
++20 min
+Anledning till försening: olycka
+
+
+

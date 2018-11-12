@@ -4,6 +4,7 @@ from human.Personal import *
 class BussDriverCollection:
     def __init__(self):
         with open("busschaffis.txt", "r", encoding="utf-8") as f:
+
             obs = f.readlines()
             self.drivers = []
 
@@ -24,53 +25,61 @@ class Report:
     def report_on_site(self, driver1):
         report = input("-----Förare på plats-----\nVänligen ange [j/n]: ")
         if report == "ja" or report == "j":
-            report = "på plats"
-            print(driver1, "är på plats.""\n")
+            report = "På plats"
             Report.report_buss_condition(self, driver1, report)
         elif report == "n" or report == "nej":
-            report = "inte på plats"
-            print(driver1, "är inte på plats.""\n")
+            report = "Inte på plats"
             Report.report_buss_condition(self, driver1, report)
         else:
             print("Fel värde")
 
     # Rapporterar vilket skick bussen är i.
     def report_buss_condition(self, driver1, report):
-        status = input("-----Bekräfta om bussen behöver något fixat-----""\n"
-                       "1. Bussen är i perfekt skick.""\n"
+        status = input("\n-----Bekräfta om bussen behöver något fixat-----""\n"
+                       "1. Bussen är i bra skick.""\n"
                        "2. Behöver en mekaniker.""\n"
                        "3. Behöver en städare.""\n"
-                       "Ange ett alternativ [1-3]: ")
+                       "\nAnge ett alternativ [1-3]: ")
 
         if status == "1":
-            status = "Perfekt skick."
-            print("Bussen är i perfekt skick.")
+            status = "Bussen är i bra skick."
             Buss().Traffic_addstuff(driver1, report, status)
         elif status == "2":
-            status = "Need a mechanic"
-            Mechanic("Ringaren", "iNottredam").call_mechanic(driver1, report, status)
+            status = "Bussen behöver en mekaniker."
+            Mechanic("Bosse", "Johansson").call_mechanic(driver1, report, status)
         elif status == "3":
-            status = "Need a cleaner"
-            Cleaner("Shitface", "Mctrotter").call_cleaner(driver1, report, status)
+            status = "Bussen behöver en städare."
+            Cleaner("Ronny", "Andersson").call_cleaner(driver1, report, status)
         else:
             print("Fel värde")
 
         # Rapporterar tidspåslag
-    def report_accident(self, valdavg, allinfo):
-        #print(valdavg)
+    def report_accident(self, valdavg, allinfo, delayreport):
         rtype = input("Ange varför det är försenat: ")
         time = input("Ange hur länge förseningen är i minuter: ")
-        newtime = valdavg.avg +" - " + valdavg.ank +" + " + time
-        print(f"""Försenat pga {rtype}: Avångstid {newtime} min""")
-        allinfo.append(newtime)
-        Report().create(allinfo)
+        newtime = valdavg.avg + " - " + valdavg.ank + "+ " + time
+        reason = f"""Avgång: {newtime} min
+Anledning till försening: {rtype}"""
+        delayreport.append(reason)
+        Report().create(delayreport)
 
-    def create(self, allinfo):
-        self.allinfo = allinfo
+    def create(self, delayreport):
+        with open("ongoing_delays.txt","a") as f:
+            f.write("-----------------\n")
+            for i in delayreport:
+                f.write("{}\n".format(i))
 
-        with open("ongoing_delays.txt", "w") as f:
-            for allinfo in f:
-                f.write(allinfo)
+    def create_condition(self, condition):
+        with open("busscondition.txt","a") as f:
+            f.write("-----------------\n")
+            for i in condition:
+                f.write("{}\n".format(i))
+
+    def create_ontime(self, ontime):
+        with open("ontime.txt","a") as f:
+            f.write("-----------------\n")
+            for i in ontime:
+                f.write("{}\n".format(i))
 
 
     #Menu().run()
@@ -78,7 +87,7 @@ class Report:
 
 class BussLinesCollection:
     def __init__(self):
-        with open("busslinje.txt", "r") as f:
+        with open("busslinje.txt", "r", encoding="utf-8") as f:
             obs = f.readlines()
 
             self.linje = []
@@ -97,17 +106,17 @@ class BussLinesCollection:
 
 class Buss:
     def __init__(self):
-        self.valdavglist = []
+        pass
 
     def samla_info(self, driver1, report, status, valdlinje, valdavg):
-      #  allt_list = []
-       # allt_list.append(valdavg.avg + valdavg.ank + driver1 + report + status + valdlinje)
-        #print(alltlist)
-        print(driver1, report, status, valdlinje, valdavg)
         allinfo = [driver1, report, status, valdlinje, valdavg]
+        delayreport = [valdlinje]
+        condition = [valdlinje, "Avgång: ", valdavg, "Rapport: ", status]
+        Report().create_condition(condition)
+        ontime = [valdlinje, "Avgång: ", valdavg, "Förare: ", driver1, "Rapport: ", report]
+        Report().create_ontime(ontime)
 
-
-        TrafficMenu().run(valdavg, allinfo)
+        TrafficMenu().run(valdavg, allinfo, delayreport)
 
 
 
@@ -116,11 +125,11 @@ class Buss:
         print(f"""1.{BussLinesCollection().get_bussline_by_id(0)}""")
         print(f"""2.{BussLinesCollection().get_bussline_by_id(1)}""")
         print(f"""3.{BussLinesCollection().get_bussline_by_id(2)}""")
-        linje = input("Välj en linje du vill åka.")
+        linje = input("Ange linje [1-3]: ")
 
         if linje == "1":
             valdlinje = BussLinesCollection().get_bussline_by_id(0)
-            print(f"""Välj avgång för busslinjen:""")
+            print(f"""\nVälj avgång för busslinjen:""")
             print("*********************************")
             print(f"""1.{Timetable().get_timetable1_spec(0)}""")
             print(f"""2.{Timetable().get_timetable1_spec(1)}""")
@@ -128,7 +137,7 @@ class Buss:
             print(f"""4.{Timetable().get_timetable1_spec(3)}""")
             print(f"""5.{Timetable().get_timetable1_spec(4)}""")
             print(f"""6.{Timetable().get_timetable1_spec(5)}""")
-            timetable1 = input("Välj specifik avgång:")
+            timetable1 = input("\nAnge specifik avgång: ")
             if timetable1 == "1":
                 valdavg = Timetable().get_timetable1_spec(0)
                 print(f"""{Timetable().get_timetable1_spec(0)}""")
@@ -158,7 +167,7 @@ class Buss:
 
         elif linje == "2":
             valdlinje = BussLinesCollection().get_bussline_by_id(1)
-            print(f"""Välj avgång för busslinjen:""")
+            print(f"""\nVälj avgång för busslinjen:""")
             print("*********************************")
             print(f"""1.{Timetable().get_timetable2_spec(0)}""")
             print(f"""2.{Timetable().get_timetable2_spec(1)}""")
@@ -166,7 +175,7 @@ class Buss:
             print(f"""4.{Timetable().get_timetable2_spec(3)}""")
             print(f"""5.{Timetable().get_timetable2_spec(4)}""")
             print(f"""6.{Timetable().get_timetable2_spec(5)}""")
-            timetable2 = input("Välj specifik avgång:")
+            timetable2 = input("\nVälj specifik avgång:")
             if timetable2 == "1":
                 valdavg = Timetable().get_timetable2_spec(0)
                 print(f"""{Timetable().get_timetable2_spec(0)}""")
@@ -196,7 +205,7 @@ class Buss:
 
         elif linje == "3":
             valdlinje = BussLinesCollection().get_bussline_by_id(2)
-            print(f"""Välj avgång för busslinjen:""")
+            print(f"""\nVälj avgång för busslinjen:""")
             print("*********************************")
             print(f"""1.{Timetable().get_timetable3_spec(0)}""")
             print(f"""2.{Timetable().get_timetable3_spec(1)}""")
@@ -204,7 +213,7 @@ class Buss:
             print(f"""4.{Timetable().get_timetable3_spec(3)}""")
             print(f"""5.{Timetable().get_timetable3_spec(4)}""")
             print(f"""6.{Timetable().get_timetable3_spec(5)}""")
-            timetable3 = input("Välj specifik avgång:")
+            timetable3 = input("\nVälj specifik avgång:")
             if timetable3 == "1":
                 valdavg = Timetable().get_timetable3_spec(0)
                 print(f"""{Timetable().get_timetable3_spec(0)}""")
@@ -281,19 +290,27 @@ class TrafficMenu:
     def __init__(self):
         pass
 
-    def send_accident(self, valdavg, allinfo):
-        Report().report_accident(valdavg, allinfo)
+    def send_accident(self, valdavg, allinfo, delayreport):
+        Report().report_accident(valdavg, allinfo, delayreport)
 
 
-    def send_idontknow(self, allinfo):
-        print(allinfo)
-        #for i in allinfo:
-         #   print(i, end="")
+    def send_currentreport(self):
+        with open("ongoing_delays.txt.", "r") as f:
+            lines = f.readlines()
+            for i in lines:
+                print(i, end="")
 
+    def send_condition(self):
+        with open("busscondition.txt.", "r") as f:
+            lines = f.readlines()
+            for i in lines:
+                print(i, end="")
 
-    def send_cleaner(self):
-        # Report().show_damage_buss()
-        pass
+    def send_ontime(self):
+        with open("ontime.txt.", "r") as f:
+            lines = f.readlines()
+            for i in lines:
+                print(i, end="")
 
     def display_traffic(self):
         print(f"""
@@ -301,10 +318,12 @@ class TrafficMenu:
 1. Rapportera försening.
 2. Se pågående förseningar.
 3. Bussåtgärder.
+4. Tidsrapportering.
 -----------------------------------------
 """)
 
-    def run(self, valdavg, allinfo):
+
+    def run(self, valdavg, allinfo, delayreport):
         displayMenu = True
         while displayMenu:
             self.display_traffic()
@@ -313,10 +332,16 @@ class TrafficMenu:
             if choice == "0":
                 Menu().run()
             elif choice == "1":
-                Report().report_accident(valdavg, allinfo)
+                Report().report_accident(valdavg, allinfo, delayreport)
 
             elif choice == "2":
-                TrafficMenu().send_idontknow(allinfo)
+                TrafficMenu().send_currentreport()
+
+            elif choice == "3":
+                TrafficMenu().send_condition()
+
+            elif choice == "4":
+                TrafficMenu().send_ontime()
 
             else:
                 print("är inte ett alternativ".format(choice))
@@ -404,7 +429,7 @@ class Get_time:
         self.ank = ank
 
     def __str__(self):
-        return f"{self.avg},{self.ank}"
+        return f"{self.avg}-{self.ank}"
 
 
 class Timetable:
