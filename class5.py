@@ -9,9 +9,10 @@ class BussDriverCollection:
             self.drivers = []
 
             for d in obs:
-                first, last = d.split()
+                first, last = d.split(" ")
                 driver = Bussdriver(first, last)
                 self.drivers.append(driver)
+        f.close()
 
     def get_driver_by_id(self, id):
             return self.drivers[id]
@@ -263,10 +264,13 @@ class Linjemenu:
         """)
 
     def run(self):
-        while True:
+        displayMenu = True
+        while displayMenu:
             self.display_linjemenu()
             choice = input("Välj linje för att se tidtabell: ")
             action = choice
+            if action == "0":
+                displayMenu = False
             if action == "1":
                 print("""\nGöteborg Centralstationen - Uddevalla Kampenhof\n** ** ** ** ** ** ** ** ** ** ** **""")
                 Timetable().get_timetable1()
@@ -318,11 +322,16 @@ class TrafficMenu:
 -----------------------------------------
 """)
 
+
     def run(self, valdavg, allinfo, delayreport):
-        while True:
+        displayMenu = True
+        while displayMenu:
             self.display_traffic()
-            choice = input("Ange ett alternativ: ")
-            if choice == "1":
+            choice = input("Ange ett alternativ: \n"
+                           "Välj 0 för att avsluta:")
+            if choice == "0":
+                Menu().run()
+            elif choice == "1":
                 Report().report_accident(valdavg, allinfo, delayreport)
 
             elif choice == "2":
@@ -345,7 +354,7 @@ class Drivermenu:
             "2": BussDriverCollection().get_driver_by_id(1),
             "3": BussDriverCollection().get_driver_by_id(2),
             "4": BussDriverCollection().get_driver_by_id(3),
-            "5": BussDriverCollection().get_driver_by_id(4)
+            "5": BussDriverCollection().get_driver_by_id(4),
         }
     def display_driver(self):
         print(f"""
@@ -359,15 +368,17 @@ class Drivermenu:
 """)
 
     def run(self):
-        while True:
+        displaymenu = True
+        while displaymenu:
             self.display_driver()
-            choice = input("Ange ett alternativ: ")
+            choice = input("Ange ett alternativ: \n"
+                           "Välj 0 för att avsluta:")
             action = self.choices.get(choice)
             if action:
-                print(f"""Förare: {Bussdriver.printname(action)}\n""")
-
-                driver1 = Bussdriver.printname(action)
+                driver1 = action
                 Report().report_on_site(driver1)
+            elif choice == "0":
+                displaymenu = False
             else:
                 print("är inte ett alternativ".format(choice))
 
@@ -381,18 +392,22 @@ class Menu:
 
     def display_menu(self):
         print("""
-        --------------Huvudmeny--------------
-        1.Företag
-        2.Konsument
-        -------------------------------------
-        """)
+--------------Huvudmeny--------------
+1.Företag
+2.Konsument
+-------------------------------------
+""")
 
     def run(self):
-        while True:
+        displaymenu = True
+        while displaymenu:
             self.display_menu()
-            choice = input("Ange ett alternativ [1-2]: ")
+            choice = input("Ange ett alternativ [1-2] \n"
+                           "eller välj 0 för att avsluta:")
             action = self.choices.get(choice)
-            if action:
+            if action == "0":
+                displaymenu = False
+            elif action:
                 action()
             else:
                 print("{0} är inte ett giltigt val".format(choice))
