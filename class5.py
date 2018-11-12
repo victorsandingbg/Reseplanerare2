@@ -46,10 +46,11 @@ class Report:
             Buss().Traffic_addstuff(driver1, report, status)
         elif status == "2":
             status = "Bussen behöver en mekaniker."
-            Mechanic("Bosse", "Johansson").call_mechanic(driver1, report, status)
+            Buss().Traffic_addstuff(driver1, report, status)
+
         elif status == "3":
             status = "Bussen behöver en städare."
-            Cleaner("Ronny", "Andersson").call_cleaner(driver1, report, status)
+            Buss().Traffic_addstuff(driver1, report, status)
         else:
             print("Fel värde")
 
@@ -57,26 +58,27 @@ class Report:
     def report_accident(self, valdavg, allinfo, delayreport):
         rtype = input("Ange varför det är försenat: ")
         time = input("Ange hur länge förseningen är i minuter: ")
-        newtime = valdavg.avg + " - " + valdavg.ank + "+ " + time
+        newtime = valdavg.avg + " - " + valdavg.ank + " + " + time
         reason = f"""Avgång: {newtime} min
 Anledning till försening: {rtype}"""
         delayreport.append(reason)
         Report().create(delayreport)
+        Menu().run()
 
     def create(self, delayreport):
-        with open("ongoing_delays.txt","a") as f:
+        with open("ongoing_delays.txt", "a") as f:
             f.write("-----------------\n")
             for i in delayreport:
                 f.write("{}\n".format(i))
 
     def create_condition(self, condition):
-        with open("busscondition.txt","a") as f:
+        with open("busscondition.txt", "a") as f:
             f.write("-----------------\n")
             for i in condition:
                 f.write("{}\n".format(i))
 
     def create_ontime(self, ontime):
-        with open("ontime.txt","a") as f:
+        with open("ontime.txt", "a") as f:
             f.write("-----------------\n")
             for i in ontime:
                 f.write("{}\n".format(i))
@@ -115,10 +117,7 @@ class Buss:
         Report().create_condition(condition)
         ontime = [valdlinje, "Avgång: ", valdavg, "Förare: ", driver1, "Rapport: ", report]
         Report().create_ontime(ontime)
-
         TrafficMenu().run(valdavg, allinfo, delayreport)
-
-
 
     def Traffic_addstuff(self, driver1, report, status):
         print("****************************************************")
@@ -267,13 +266,19 @@ class Linjemenu:
         displayMenu = True
         while displayMenu:
             self.display_linjemenu()
-            choice = input("Välj linje för att se tidtabell: ")
+            choice = input("Välj linje för att se tidtabell: \n"
+                            "Välj 0 för att avsluta.")
             action = choice
             if action == "0":
                 displayMenu = False
             if action == "1":
                 print("""\nGöteborg Centralstationen - Uddevalla Kampenhof\n** ** ** ** ** ** ** ** ** ** ** **""")
                 Timetable().get_timetable1()
+                with open("ongoing_delays.txt","r") as f:
+                    lines = f.readlines()
+                    for i in lines:
+                        print(i, end="")
+
             elif action == "2":
                 print("""\nPartille Centrum - Nordstan\n** ** ** ** ** ** ** ** ** ** ** **""")
                 Timetable().get_timetable2()
@@ -286,6 +291,14 @@ class Linjemenu:
                 print("är inte ett alternativ".format(choice))
 
 
+"""             with open("tables_linje95") as f:
+                line = f.readline()
+                cnt = 1
+                while:
+                    if line == newtime:
+                        tables.append(newtime)
+                    cnt += 1
+"""
 class TrafficMenu:
     def __init__(self):
         pass
@@ -332,8 +345,10 @@ class TrafficMenu:
             if choice == "0":
                 Menu().run()
             elif choice == "1":
-                Report().report_accident(valdavg, allinfo, delayreport)
-
+                if allinfo == None:
+                    print("Du har inte valt linje, Välj linje.")
+                else:
+                    Report().report_accident(valdavg, allinfo, delayreport)
             elif choice == "2":
                 TrafficMenu().send_currentreport()
 
@@ -399,15 +414,11 @@ class Menu:
 """)
 
     def run(self):
-        displaymenu = True
-        while displaymenu:
+        while True:
             self.display_menu()
-            choice = input("Ange ett alternativ [1-2] \n"
-                           "eller välj 0 för att avsluta:")
+            choice = input("Ange ett alternativ [1-2] \n")
             action = self.choices.get(choice)
-            if action == "0":
-                displaymenu = False
-            elif action:
+            if action:
                 action()
             else:
                 print("{0} är inte ett giltigt val".format(choice))
@@ -415,13 +426,50 @@ class Menu:
     def company(self):
         password = input("Vänligen skriv in lösenordet: ")
         if password == "dog":
-            Drivermenu().run()
+            companyMenu().run()
         else:
             print("Fel lösenord")
 
     def consumer(self):
         Linjemenu().run()
 
+
+
+class companyMenu:
+    def __init__(self):
+        self.choices = {
+            "1": self.busschaffisar,
+            "2": self.trafikgenvag,
+        }
+
+    def display_menu(self):
+        print("""
+--------------Företagsmeny--------------
+1.Bussförare
+2.Trafikledning
+-------------------------------------
+""")
+
+    def run(self):
+        displaymenu = True
+        while displaymenu:
+            self.display_menu()
+            choice = input("Ange ett alternativ [1-2] \n"
+                           "Välj 0 för Startmenyn:")
+            action = self.choices.get(choice)
+            if action:
+                action()
+
+            elif choice == "0":
+                displaymenu = False
+            else:
+                print(f"""{choice} är inte ett giltigt""")
+
+    def busschaffisar(self):
+        Drivermenu().run()
+
+    def trafikgenvag(self):
+        TrafficMenu().run(valdavg=None,allinfo=None,delayreport=None)
 
 class Get_time:
     def __init__(self, avg, ank):
