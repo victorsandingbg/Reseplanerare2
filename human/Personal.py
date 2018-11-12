@@ -20,17 +20,3 @@ class Bussdriver(Personal):
     def printname(self):
         return f"{self.first} {self.last}"
 
-
-class Mechanic(Personal):
-    def __init__(self, first, last):
-        super().__init__(first, last)
-
-    def call_mechanic(self, driver1, report, status):
-        Buss().Traffic_addstuff(driver1, report, status)
-
-class Cleaner(Personal):
-    def __init__(self, first, last):
-        super().__init__(first, last)
-
-    def call_cleaner(self, driver1, report, status):
-        Buss().Traffic_addstuff(driver1, report, status)
