@@ -14,7 +14,7 @@ class Bussdriver(Personal):
         self.report = report
 
     def __str__(self):
-        return f"{self.first}, {self.last}"
+        return f"{self.first} {self.last}"
 
         # Printar ut Bussförarensnamn
     def printname(self):
@@ -26,7 +26,6 @@ class Mechanic(Personal):
         super().__init__(first, last)
 
     def call_mechanic(self, driver1, report, status):
-        print(driver1, """behöver en mekaniker!""""\n")
         Buss().Traffic_addstuff(driver1, report, status)
 
 class Cleaner(Personal):
@@ -34,10 +33,4 @@ class Cleaner(Personal):
         super().__init__(first, last)
 
     def call_cleaner(self, driver1, report, status):
-        print(driver1, """behöver en städare!""""\n")
         Buss().Traffic_addstuff(driver1, report, status)
-
-  #  def add_cleaner(self):
-   #     cleanerlist = []
-    #    cleanerlist.append(self)
-
