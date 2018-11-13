@@ -1,4 +1,4 @@
-from class5 import *
+from PROGRAM_MASTER import *
         # Skapar Individen
 
 class Personal:
