@@ -11,7 +11,7 @@ class BussDriverCollection:
                 first, last = d.split(" ")
                 driver = Bussdriver(first, last)
                 self.drivers.append(driver)
-        f.close()
+            f.close()
 
     def get_driver_by_id(self, id):
             return self.drivers[id]
@@ -54,14 +54,16 @@ class Report:
             print("Fel värde")
 
         # Rapporterar tidspåslag
-    def report_accident(self, valdavg, allinfo, delayreport):
+    def report_accident(self, valdavg, allinfo, delayreport, valdlinje):
         rtype = input("Ange varför det är försenat: ")
         time = input("Ange hur länge förseningen är i minuter: ")
         newtime = valdavg.avg + " - " + valdavg.ank + "+ " + time
         reason = f"""Avgång: {newtime} min
 Anledning till försening: {rtype}"""
+        consumerdelay = [valdlinje, newtime]
         delayreport.append(reason)
         Report().create(delayreport)
+        Report().create_consumerdelay(consumerdelay)
         Menu().run()
 
     def create(self, delayreport):
@@ -82,7 +84,13 @@ Anledning till försening: {rtype}"""
             for i in ontime:
                 f.write("{}\n".format(i))
 
+    def create_consumerdelay(self, consumerdelay):
+        with open("consumerdelay.txt", "a") as f:
+            f.write("-----------------\n")
+            for i in consumerdelay:
+                f.write("{}\n".format(i))
 
+                
 class BussLinesCollection:
     def __init__(self):
         with open("busslinje.txt", "r", encoding="utf-8") as f:
@@ -107,6 +115,9 @@ class Buss:
         Report().create_condition(condition)
         ontime = [valdlinje, "Avgång: ", valdavg, "Förare: ", driver1, "Rapport: ", report]
         Report().create_ontime(ontime)
+        Report().report_accident(valdavg, allinfo, delayreport, valdlinje)
+
+
         TrafficMenu().run(valdavg, allinfo, delayreport)
 
     def Traffic_addstuff(self, driver1, report, status):
@@ -302,6 +313,7 @@ class Linjemenu:
             "1": BussLinesCollection().get_bussline_by_id(0),
             "2": BussLinesCollection().get_bussline_by_id(1),
             "3": BussLinesCollection().get_bussline_by_id(2),
+            #"4": gå till läsa txt fil
         }
 
     def display_linjemenu(self):
@@ -311,6 +323,7 @@ class Linjemenu:
 1.{BussLinesCollection().get_bussline_by_id(0)}
 2.{BussLinesCollection().get_bussline_by_id(1)}
 3.{BussLinesCollection().get_bussline_by_id(2)}
+4.Se pågående förseningar i trafiken
 --------------------------------------
         """)
 
@@ -339,6 +352,10 @@ class Linjemenu:
                 print("""\nKungsbacka Station - Göteborg Centralstation\n** ** ** ** ** ** ** ** ** ** ** **""")
                 Timetable().get_timetable3()
 
+            elif action == "4":
+                TrafficMenu().send_consumerdelay()
+
+
             else:
                 print("är inte ett alternativ".format(choice))
 
@@ -361,6 +378,12 @@ class TrafficMenu:
 
     def send_ontime(self):
         with open("ontime.txt.", "r") as f:
+            lines = f.readlines()
+            for i in lines:
+                print(i, end="")
+
+    def send_consumerdelay(self):
+        with open("consumerdelay.txt", "r") as f:
             lines = f.readlines()
             for i in lines:
                 print(i, end="")
@@ -523,7 +546,6 @@ class companyMenu:
 
     def trafikgenvag(self):
         TrafficMenu().run(valdavg=None, allinfo=None, delayreport=None)
-
 
 def main():
     Menu().run()
