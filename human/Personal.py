@@ -4,7 +4,7 @@ from class5 import *
 class Personal:
     def __init__(self, first, last):
         self.first = first
-        self.last = last
+        self.last = last.replace("\n", "")
         # Hämtar busschaufförer från ett txt dokument och pekar på rätt rad i txt dokumentet.
 
 
