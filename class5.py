@@ -311,7 +311,6 @@ class Linjemenu:
             "1": BussLinesCollection().get_bussline_by_id(0),
             "2": BussLinesCollection().get_bussline_by_id(1),
             "3": BussLinesCollection().get_bussline_by_id(2),
-            #"4": gå till läsa txt fil
         }
 
     def display_linjemenu(self):
@@ -352,7 +351,6 @@ class Linjemenu:
 
             elif action == "4":
                 TrafficMenu().send_consumerdelay()
-
 
             else:
                 print("är inte ett alternativ".format(choice))
@@ -546,68 +544,6 @@ class companyMenu:
     def trafikgenvag(self):
 
         TrafficMenu().run(valdavg=None,allinfo=None,delayreport=None, valdlinje=None)
-
-class Get_time:
-    def __init__(self, avg, ank):
-        self.avg = avg
-        self.ank = ank
-
-    def __str__(self):
-        return f"{self.avg}-{self.ank}"
-
-
-class Timetable:
-    def __init__(self):
-        with open("tables_linje541.txt", "r") as f:
-
-            obs = f.readlines()
-            self.table1 = []
-
-            for d in obs:
-                avg, ank = d.split(";")
-                string = Get_time(avg, ank)
-                self.table1.append(string)
-
-        with open("tables_linje121.txt", "r") as f:
-
-            obs = f.readlines()
-            self.table2 = []
-
-            for d in obs:
-                avg, ank = d.split(";")
-                string = Get_time(avg, ank)
-                self.table2.append(string)
-
-        with open("tables_linje95.txt", "r") as f:
-
-            obs = f.readlines()
-            self.table3 = []
-
-            for d in obs:
-                avg, ank = d.split(";")
-                string = Get_time(avg, ank)
-                self.table3.append(string)
-
-    def get_timetable1_spec(self, id):
-        return self.table1[id]
-
-    def get_timetable2_spec(self, id):
-        return self.table2[id]
-
-    def get_timetable3_spec(self, id):
-        return self.table3[id]
-
-    def get_timetable1(self):
-        for all in self.table1:
-            print(all)
-
-    def get_timetable2(self):
-        for all in self.table2:
-            print(all)
-
-    def get_timetable3(self):
-        for all in self.table3:
-            print(all)
 
 
 def main():
