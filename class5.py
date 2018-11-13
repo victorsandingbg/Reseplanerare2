@@ -1,6 +1,5 @@
 from human.Personal import *
 
-
 class BussDriverCollection:
     def __init__(self):
         with open("busschaffis.txt", "r", encoding="utf-8") as f:
@@ -91,7 +90,7 @@ Anledning till försening: {rtype}"""
             for i in consumerdelay:
                 f.write("{}\n".format(i))
 
-
+                
 class BussLinesCollection:
     def __init__(self):
         with open("busslinje.txt", "r", encoding="utf-8") as f:
@@ -103,12 +102,6 @@ class BussLinesCollection:
 
     def get_bussline_by_id(self, id):
             return self.linje[id]
-
-        # läs in en linje från filen
-        # skapa alla hållplatser för denna linje
-        # för varje hållplats anropa add_stop för denna linje
-        # När linjen är färdigskapad anropa add_line och skicka med denna linje
-        # stäng filen när klar
 
 
 class Buss:
@@ -249,8 +242,70 @@ class Buss:
                 print("Tyvärr, vänligen försök igen.")
         else:
             print("Välj ett annat alternativ:")
-        # Meny för själva linjerna till bussarna
 
+
+class Get_time:
+    def __init__(self, avg, ank):
+        self.avg = avg
+        self.ank = ank
+
+    def __str__(self):
+        return f"{self.avg}-{self.ank}"
+
+
+class Timetable:
+    def __init__(self):
+        with open("tables_linje541.txt", "r") as f:
+
+            obs = f.readlines()
+            self.table1 = []
+
+            for d in obs:
+                avg, ank = d.split(";")
+                string = Get_time(avg, ank)
+                self.table1.append(string)
+
+        with open("tables_linje121.txt", "r") as f:
+
+            obs = f.readlines()
+            self.table2 = []
+
+            for d in obs:
+                avg, ank = d.split(";")
+                string = Get_time(avg, ank)
+                self.table2.append(string)
+
+        with open("tables_linje95.txt", "r") as f:
+
+            obs = f.readlines()
+            self.table3 = []
+
+            for d in obs:
+                avg, ank = d.split(";")
+                string = Get_time(avg, ank)
+                self.table3.append(string)
+
+    def get_timetable1_spec(self, id):
+        return self.table1[id]
+
+    def get_timetable2_spec(self, id):
+        return self.table2[id]
+
+    def get_timetable3_spec(self, id):
+        return self.table3[id]
+
+    def get_timetable1(self):
+        for all in self.table1:
+            print(all)
+
+    def get_timetable2(self):
+        for all in self.table2:
+            print(all)
+
+    def get_timetable3(self):
+        for all in self.table3:
+            print(all)
+            
 
 class Linjemenu:
     def __init__(self):
@@ -306,12 +361,8 @@ class Linjemenu:
 
 
 class TrafficMenu:
-    def __init__(self):
-        pass
-
     def send_accident(self, valdavg, allinfo, delayreport):
         Report().report_accident(valdavg, allinfo, delayreport)
-
 
     def send_currentreport(self):
         with open("ongoing_delays.txt.", "r") as f:
@@ -344,11 +395,12 @@ class TrafficMenu:
 2. Se pågående förseningar.
 3. Bussåtgärder.
 4. Tidsrapportering.
+5. Avräknare för busschaufför
 -----------------------------------------
 """)
 
-
     def run(self, valdavg, allinfo, delayreport):
+        passenger = []
         displayMenu = True
         while displayMenu:
             self.display_traffic()
@@ -370,9 +422,22 @@ class TrafficMenu:
             elif choice == "4":
                 TrafficMenu().send_ontime()
 
+            elif choice == "5":
+                count_passenger().add_passenger(passenger)
+                newlist = 0
+                for x in passenger:
+                    newlist += x
+                print("Antal resenärer som har åkt:", newlist)
+
             else:
                 print("är inte ett alternativ".format(choice))
 
+
+class count_passenger:
+    def add_passenger(self, passenger):
+        number = int(input("Rapportera hur många passagerare som åkt buss idag:"))
+        passenger.append(number)
+        return passenger
 
 class Drivermenu:
     def __init__(self):
@@ -446,7 +511,6 @@ class Menu:
         Linjemenu().run()
 
 
-
 class companyMenu:
     def __init__(self):
         self.choices = {
@@ -481,70 +545,8 @@ class companyMenu:
         Drivermenu().run()
 
     def trafikgenvag(self):
-        TrafficMenu().run(valdavg=None,allinfo=None,delayreport=None)
+        TrafficMenu().run(valdavg=None, allinfo=None, delayreport=None)
 
-class Get_time:
-    def __init__(self, avg, ank):
-        self.avg = avg
-        self.ank = ank
-
-    def __str__(self):
-        return f"{self.avg}-{self.ank}"
-
-
-class Timetable:
-    def __init__(self):
-        with open("tables_linje541.txt", "r") as f:
-
-            obs = f.readlines()
-            self.table1 = []
-
-            for d in obs:
-                avg, ank = d.split(";")
-                string = Get_time(avg, ank)
-                self.table1.append(string)
-
-        with open("tables_linje121.txt", "r") as f:
-
-            obs = f.readlines()
-            self.table2 = []
-
-            for d in obs:
-                avg, ank = d.split(";")
-                string = Get_time(avg, ank)
-                self.table2.append(string)
-
-        with open("tables_linje95.txt", "r") as f:
-
-            obs = f.readlines()
-            self.table3 = []
-
-            for d in obs:
-                avg, ank = d.split(";")
-                string = Get_time(avg, ank)
-                self.table3.append(string)
-
-    def get_timetable1_spec(self, id):
-        return self.table1[id]
-
-    def get_timetable2_spec(self, id):
-        return self.table2[id]
-
-    def get_timetable3_spec(self, id):
-        return self.table3[id]
-
-    def get_timetable1(self):
-        for all in self.table1:
-            print(all)
-
-    def get_timetable2(self):
-        for all in self.table2:
-            print(all)
-
-    def get_timetable3(self):
-        for all in self.table3:
-            print(all)
-            
 def main():
     Menu().run()
 
