@@ -32,7 +32,7 @@ class Report:
         else:
             print("Fel värde")
 
-    # Rapporterar vilket skick bussen är i.
+
     def report_buss_condition(self, driver1, report):
         status = input("\n-----Bekräfta om bussen behöver något fixat-----""\n"
                        "1. Bussen är i bra skick.""\n"
@@ -53,18 +53,35 @@ class Report:
         else:
             print("Fel värde")
 
-        # Rapporterar tidspåslag
+
     def report_accident(self, valdavg, allinfo, delayreport, valdlinje):
         rtype = input("Ange varför det är försenat: ")
         time = input("Ange hur länge förseningen är i minuter: ")
-        newtime = valdavg.avg + " - " + valdavg.ank + "+ " + time
+        while True:
+            try:
+                Report().notinnumber(time)
+            except ValueError as e:
+                print(e)
+                time = input("Ange hur länge förseningen är i minuter: ")
+            else:
+                break
+
+        newtime = valdavg.avg + " - " + valdavg.ank + " + " + time
         reason = f"""Avgång: {newtime} min
 Anledning till försening: {rtype}"""
-        consumerdelay = [valdlinje, "Avgång:",newtime]
+        consumerdelay = [valdlinje, "Avgång:", newtime + " min"]
         delayreport.append(reason)
         Report().create(delayreport)
         Report().create_consumerdelay(consumerdelay)
+
         Menu().run()
+
+    def notinnumber(self, time):
+        if not time.isdecimal():
+            raise ValueError("Ange ett numeriskt värde.")
+        else:
+            return True
+
 
     def create(self, delayreport):
         with open("ongoing_delays.txt", "a") as f:
@@ -94,10 +111,13 @@ Anledning till försening: {rtype}"""
 class BussLinesCollection:
     def __init__(self):
         with open("busslinje.txt", "r", encoding="utf-8") as f:
+
             obs = f.readlines()
 
             self.linje = []
             for d in obs:
+                d = d.strip("\n")
+
                 self.linje.append(d)
 
     def get_bussline_by_id(self, id):
@@ -123,7 +143,7 @@ class Buss:
         print(f"""1.{BussLinesCollection().get_bussline_by_id(0)}""")
         print(f"""2.{BussLinesCollection().get_bussline_by_id(1)}""")
         print(f"""3.{BussLinesCollection().get_bussline_by_id(2)}""")
-        linje = input("Ange linje [1-3]: ")
+        linje = input("\nAnge linje [1-3]: ")
 
         if linje == "1":
             valdlinje = BussLinesCollection().get_bussline_by_id(0)
@@ -245,7 +265,8 @@ class Buss:
 class Get_time:
     def __init__(self, avg, ank):
         self.avg = avg
-        self.ank = ank
+        self.ank = ank.replace("\n", "")
+
 
     def __str__(self):
         return f"{self.avg}-{self.ank}"
@@ -320,7 +341,7 @@ class Linjemenu:
 1.{BussLinesCollection().get_bussline_by_id(0)}
 2.{BussLinesCollection().get_bussline_by_id(1)}
 3.{BussLinesCollection().get_bussline_by_id(2)}
-4.Se pågående förseningar i trafiken
+4.Se pågående förseningar i trafiken.
 --------------------------------------
         """)
 
@@ -391,7 +412,7 @@ class TrafficMenu:
 2. Se pågående förseningar.
 3. Bussåtgärder.
 4. Tidsrapportering.
-5. Avräknare för busschaufför
+5. Avräknare för busschaufför.
 -----------------------------------------
 """)
 
@@ -422,9 +443,9 @@ class TrafficMenu:
             elif choice == "5":
                 count_passenger().add_passenger(passenger)
                 newlist = 0
-                for x in passenger:
-                    newlist += x
-                print("Antal resenärer som har åkt:", newlist)
+                for i in passenger:
+                    newlist += int(i)
+                print("Antal passagerare som åkt buss idag:", newlist)
 
             else:
                 print("är inte ett alternativ".format(choice))
@@ -432,9 +453,23 @@ class TrafficMenu:
 
 class count_passenger:
     def add_passenger(self, passenger):
-        number = int(input("Rapportera hur många passagerare som åkt buss idag:"))
-        passenger.append(number)
-        return passenger
+        number = input("Rapportera hur många passagerare som åkt buss idag:")
+        while True:
+            try:
+                count_passenger().not_number(number)
+            except ValueError as e:
+                print(e)
+                number = input("Rapportera hur många passagerare som åkt buss idag:")
+            else:
+                passenger.append(number)
+                return passenger
+
+    def not_number(self, number):
+        if not number.isdecimal():
+            raise ValueError("Ange antal passagerare med siffror.")
+        else:
+            return True
+
 
 class Drivermenu:
     def __init__(self):
@@ -490,7 +525,7 @@ class Menu:
     def run(self):
         while True:
             self.display_menu()
-            choice = input("Ange ett alternativ [1-2] \n")
+            choice = input("Ange ett alternativ [1-2]: \n")
             action = self.choices.get(choice)
             if action:
                 action()
@@ -536,7 +571,7 @@ class companyMenu:
             elif choice == "0":
                 displaymenu = False
             else:
-                print(f"""{choice} är inte ett giltigt""")
+                print(f"""{choice} är inte ett giltigt val""")
 
     def busschaffisar(self):
         Drivermenu().run()
