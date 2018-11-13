@@ -61,7 +61,7 @@ class Report:
         newtime = valdavg.avg + " - " + valdavg.ank + "+ " + time
         reason = f"""Avgång: {newtime} min
 Anledning till försening: {rtype}"""
-        consumerdelay = [valdlinje, newtime]
+        consumerdelay = [valdlinje, "Avgång:",newtime]
         delayreport.append(reason)
         Report().create(delayreport)
         Report().create_consumerdelay(consumerdelay)
@@ -122,10 +122,8 @@ class Buss:
         Report().create_condition(condition)
         ontime = [valdlinje, "Avgång: ", valdavg, "Förare: ", driver1, "Rapport: ", report]
         Report().create_ontime(ontime)
-        Report().report_accident(valdavg, allinfo, delayreport, valdlinje)
+        TrafficMenu().run(valdavg, allinfo, delayreport, valdlinje)
 
-
-        TrafficMenu().run(valdavg, allinfo, delayreport)
 
     def Traffic_addstuff(self, driver1, report, status):
         print("****************************************************")
@@ -348,7 +346,7 @@ class TrafficMenu:
 """)
 
 
-    def run(self, valdavg, allinfo, delayreport):
+    def run(self, valdavg, allinfo, delayreport, valdlinje):
         displayMenu = True
         while displayMenu:
             self.display_traffic()
@@ -360,7 +358,7 @@ class TrafficMenu:
                 if allinfo == None:
                     print("Du har inte valt linje, Välj linje.")
                 else:
-                    Report().report_accident(valdavg, allinfo, delayreport)
+                    Report().report_accident(valdavg, allinfo, delayreport, valdlinje)
             elif choice == "2":
                 TrafficMenu().send_currentreport()
 
@@ -481,7 +479,7 @@ class companyMenu:
         Drivermenu().run()
 
     def trafikgenvag(self):
-        TrafficMenu().run(valdavg=None,allinfo=None,delayreport=None)
+        TrafficMenu().run(valdavg=None,allinfo=None,delayreport=None, valdlinje=None)
 
 class Get_time:
     def __init__(self, avg, ank):
@@ -544,7 +542,7 @@ class Timetable:
     def get_timetable3(self):
         for all in self.table3:
             print(all)
-            
+
 def main():
     Menu().run()
 
