@@ -60,7 +60,7 @@ class Report:
         newtime = valdavg.avg + " - " + valdavg.ank + "+ " + time
         reason = f"""Avgång: {newtime} min
 Anledning till försening: {rtype}"""
-        consumerdelay = [valdlinje, newtime]
+        consumerdelay = [valdlinje, "Avgång:",newtime]
         delayreport.append(reason)
         Report().create(delayreport)
         Report().create_consumerdelay(consumerdelay)
@@ -115,10 +115,8 @@ class Buss:
         Report().create_condition(condition)
         ontime = [valdlinje, "Avgång: ", valdavg, "Förare: ", driver1, "Rapport: ", report]
         Report().create_ontime(ontime)
-        Report().report_accident(valdavg, allinfo, delayreport, valdlinje)
+        TrafficMenu().run(valdavg, allinfo, delayreport, valdlinje)
 
-
-        TrafficMenu().run(valdavg, allinfo, delayreport)
 
     def Traffic_addstuff(self, driver1, report, status):
         print("****************************************************")
@@ -399,7 +397,8 @@ class TrafficMenu:
 -----------------------------------------
 """)
 
-    def run(self, valdavg, allinfo, delayreport):
+
+    def run(self, valdavg, allinfo, delayreport, valdlinje):
         passenger = []
         displayMenu = True
         while displayMenu:
@@ -412,7 +411,7 @@ class TrafficMenu:
                 if allinfo == None:
                     print("Du har inte valt linje, Välj linje.")
                 else:
-                    Report().report_accident(valdavg, allinfo, delayreport)
+                    Report().report_accident(valdavg, allinfo, delayreport, valdlinje)
             elif choice == "2":
                 TrafficMenu().send_currentreport()
 
@@ -545,7 +544,71 @@ class companyMenu:
         Drivermenu().run()
 
     def trafikgenvag(self):
-        TrafficMenu().run(valdavg=None, allinfo=None, delayreport=None)
+
+        TrafficMenu().run(valdavg=None,allinfo=None,delayreport=None, valdlinje=None)
+
+class Get_time:
+    def __init__(self, avg, ank):
+        self.avg = avg
+        self.ank = ank
+
+    def __str__(self):
+        return f"{self.avg}-{self.ank}"
+
+
+class Timetable:
+    def __init__(self):
+        with open("tables_linje541.txt", "r") as f:
+
+            obs = f.readlines()
+            self.table1 = []
+
+            for d in obs:
+                avg, ank = d.split(";")
+                string = Get_time(avg, ank)
+                self.table1.append(string)
+
+        with open("tables_linje121.txt", "r") as f:
+
+            obs = f.readlines()
+            self.table2 = []
+
+            for d in obs:
+                avg, ank = d.split(";")
+                string = Get_time(avg, ank)
+                self.table2.append(string)
+
+        with open("tables_linje95.txt", "r") as f:
+
+            obs = f.readlines()
+            self.table3 = []
+
+            for d in obs:
+                avg, ank = d.split(";")
+                string = Get_time(avg, ank)
+                self.table3.append(string)
+
+    def get_timetable1_spec(self, id):
+        return self.table1[id]
+
+    def get_timetable2_spec(self, id):
+        return self.table2[id]
+
+    def get_timetable3_spec(self, id):
+        return self.table3[id]
+
+    def get_timetable1(self):
+        for all in self.table1:
+            print(all)
+
+    def get_timetable2(self):
+        for all in self.table2:
+            print(all)
+
+    def get_timetable3(self):
+        for all in self.table3:
+            print(all)
+
 
 def main():
     Menu().run()
