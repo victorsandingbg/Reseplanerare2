@@ -1,0 +1,24 @@
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+Avgång: 
+09:00-10:30
+Rapport: 
+Bussen är i bra skick.
+-----------------
+Busslinje 121 | Partille Centrum - Nordstan
+Avgång: 
+23:15-23:45
+Rapport: 
+Bussen behöver en mekaniker.
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+Avgång: 
+14:00-15:00
+Rapport: 
+Bussen behöver en mekaniker.
+-----------------
+Busslinje 121 | Partille Centrum - Nordstan
+Avgång: 
+14:15-14:45
+Rapport: 
+Bussen är i bra skick.
