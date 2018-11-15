@@ -22,3 +22,21 @@ Avgång:
 14:15-14:45
 Rapport: 
 Bussen är i bra skick.
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+Avgång: 
+09:00-10:30
+Rapport: 
+Bussen är i bra skick.
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+Avgång: 
+17:30-18:30
+Rapport: 
+Bussen behöver en städare.
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+Avgång: 
+10:00-11:00
+Rapport: 
+Bussen behöver en mekaniker.

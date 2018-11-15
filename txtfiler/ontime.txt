@@ -30,3 +30,27 @@ Förare:
 Sven-Erik Magnusson
 Rapport: 
 På plats
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+Avgång: 
+09:00-10:30
+Förare: 
+Sven-Erik Magnusson
+Rapport: 
+På plats
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+Avgång: 
+17:30-18:30
+Förare: 
+Rune Bergman
+Rapport: 
+På plats
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+Avgång: 
+10:00-11:00
+Förare: 
+Ingvar Karlsson
+Rapport: 
+På plats
