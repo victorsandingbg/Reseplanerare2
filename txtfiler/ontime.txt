@@ -1,0 +1,32 @@
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+Avgång: 
+09:00-10:30
+Förare: 
+Sven-Erik Magnusson
+Rapport: 
+På plats
+-----------------
+Busslinje 121 | Partille Centrum - Nordstan
+Avgång: 
+23:15-23:45
+Förare: 
+Ingvar Karlsson
+Rapport: 
+Inte på plats
+-----------------
+Busslinje 95  | Kungsbacka Station - Göteborg Centralstation
+Avgång: 
+14:00-15:00
+Förare: 
+Sven Svärd
+Rapport: 
+På plats
+-----------------
+Busslinje 121 | Partille Centrum - Nordstan
+Avgång: 
+14:15-14:45
+Förare: 
+Sven-Erik Magnusson
+Rapport: 
+På plats

@@ -1,4 +1,4 @@
-from class5 import *
+from Reseplanerare import *
         # Skapar Individen
 
 class Personal:

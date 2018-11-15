@@ -1,8 +1,9 @@
 from human.Personal import *
 
+
 class BussDriverCollection:
     def __init__(self):
-        with open("busschaffis.txt", "r", encoding="utf-8") as f:
+        with open("txtfiler/busschaffis.txt", "r", encoding="utf-8") as f:
 
             obs = f.readlines()
             self.drivers = []
@@ -84,25 +85,25 @@ Anledning till försening: {rtype}"""
 
 
     def create(self, delayreport):
-        with open("ongoing_delays.txt", "a") as f:
+        with open("txtfiler/ongoing_delays.txt", "a") as f:
             f.write("-----------------\n")
             for i in delayreport:
                 f.write("{}\n".format(i))
 
     def create_condition(self, condition):
-        with open("busscondition.txt", "a") as f:
+        with open("txtfiler/busscondition.txt", "a") as f:
             f.write("-----------------\n")
             for i in condition:
                 f.write("{}\n".format(i))
 
     def create_ontime(self, ontime):
-        with open("ontime.txt", "a") as f:
+        with open("txtfiler/ontime.txt", "a") as f:
             f.write("-----------------\n")
             for i in ontime:
                 f.write("{}\n".format(i))
 
     def create_consumerdelay(self, consumerdelay):
-        with open("consumerdelay.txt", "a") as f:
+        with open("txtfiler/consumerdelay.txt", "a") as f:
             f.write("-----------------\n")
             for i in consumerdelay:
                 f.write("{}\n".format(i))
@@ -110,7 +111,7 @@ Anledning till försening: {rtype}"""
                 
 class BussLinesCollection:
     def __init__(self):
-        with open("busslinje.txt", "r", encoding="utf-8") as f:
+        with open("txtfiler/busslinje.txt", "r", encoding="utf-8") as f:
 
             obs = f.readlines()
 
@@ -274,7 +275,7 @@ class Get_time:
 
 class Timetable:
     def __init__(self):
-        with open("tables_linje541.txt", "r") as f:
+        with open("txtfiler/tables_linje541.txt", "r") as f:
 
             obs = f.readlines()
             self.table1 = []
@@ -284,7 +285,7 @@ class Timetable:
                 string = Get_time(avg, ank)
                 self.table1.append(string)
 
-        with open("tables_linje121.txt", "r") as f:
+        with open("txtfiler/tables_linje121.txt", "r") as f:
 
             obs = f.readlines()
             self.table2 = []
@@ -294,7 +295,7 @@ class Timetable:
                 string = Get_time(avg, ank)
                 self.table2.append(string)
 
-        with open("tables_linje95.txt", "r") as f:
+        with open("txtfiler/tables_linje95.txt", "r") as f:
 
             obs = f.readlines()
             self.table3 = []
@@ -357,10 +358,6 @@ class Linjemenu:
             if action == "1":
                 print("""\nGöteborg Centralstationen - Uddevalla Kampenhof\n** ** ** ** ** ** ** ** ** ** ** **""")
                 Timetable().get_timetable1()
-                with open("ongoing_delays.txt","r") as f:
-                    lines = f.readlines()
-                    for i in lines:
-                        print(i, end="")
 
             elif action == "2":
                 print("""\nPartille Centrum - Nordstan\n** ** ** ** ** ** ** ** ** ** ** **""")
@@ -377,30 +374,31 @@ class Linjemenu:
                 print("är inte ett alternativ".format(choice))
 
 
+
 class TrafficMenu:
     def send_accident(self, valdavg, allinfo, delayreport):
         Report().report_accident(valdavg, allinfo, delayreport)
 
     def send_currentreport(self):
-        with open("ongoing_delays.txt.", "r") as f:
+        with open("txtfiler/ongoing_delays.txt.", "r") as f:
             lines = f.readlines()
             for i in lines:
                 print(i, end="")
 
     def send_condition(self):
-        with open("busscondition.txt.", "r") as f:
+        with open("txtfiler/busscondition.txt.", "r") as f:
             lines = f.readlines()
             for i in lines:
                 print(i, end="")
 
     def send_ontime(self):
-        with open("ontime.txt.", "r") as f:
+        with open("txtfiler/ontime.txt.", "r") as f:
             lines = f.readlines()
             for i in lines:
                 print(i, end="")
 
     def send_consumerdelay(self):
-        with open("consumerdelay.txt", "r") as f:
+        with open("txtfiler/consumerdelay.txt", "r") as f:
             lines = f.readlines()
             for i in lines:
                 print(i, end="")
