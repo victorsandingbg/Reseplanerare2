@@ -14,3 +14,7 @@ Anledning till försening: kaos
 Busslinje 121 | Partille Centrum - Nordstan
 Avgång: 14:15 - 14:45 + 20 min
 Anledning till försening: dog
+-----------------
+Busslinje 541 | Göteborg Centralstationen - Uddevalla Kampenhof
+Avgång: 09:00 - 10:30 + 20 min
+Anledning till försening: krock
